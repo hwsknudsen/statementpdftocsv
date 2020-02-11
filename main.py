@@ -3,6 +3,8 @@ import os
 import csv
 import pandas as pd
 import math
+import numpy as np
+
 
 path = 'C:\Satements'
 os.chdir(path)
@@ -28,8 +30,10 @@ for file in obj:
         amtdue = 0;
 
         for x in range(len(list)):
-
-            amtdue = amtdue + list[x][5]
+            
+            if str(list[x][5])!='nan':
+                amtdue = list[x][5] + amtdue
+                #print(amtdue)
             
             if list[x][0].startswith('Cust'):
                 #for y in range(len(list[x])):
@@ -49,7 +53,7 @@ for file in obj:
             f.write(opstr+'\n')
 
         f.write("Conversion Check Sum: " + str(amtdue))
-
+        print(amtdue)
 
 
         f.close()
