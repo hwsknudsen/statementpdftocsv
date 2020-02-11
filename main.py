@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import math
 import numpy as np
+import PyPDF2
 
 
 path = 'C:\Satements'
@@ -52,8 +53,22 @@ for file in obj:
             
             f.write(opstr+'\n')
 
-        f.write("Conversion Check Sum: " + str(amtdue))
-        print(amtdue)
+        pdfFileObj = open(file.name, 'rb')
+        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+        lastpage = pdfReader.getNumPages()
+        #print(lastpage)
+
+        data2 = tabula.read_pdf(file, pages='11', multiple_tables=False, guess=False, area=[[700,18,762,590]], columns=[100,200,285,365,460], pandas_options={'header': None})
+        df2 = pd.DataFrame(data2[0])
+        list2 = df2.values.tolist()
+
+        #print(list2[1][5])
+
+        f.write(str(list2[0])+'\n')
+        f.write(str(list2[1])+'\n')
+        
+        f.write("Conversion Check Sum: " + format(amtdue, '.2f'))
+        #print(format(amtdue, '.2f'))
 
 
         f.close()
