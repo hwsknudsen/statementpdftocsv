@@ -15,7 +15,8 @@ obj = os.scandir(path)
 for file in obj:
     if file.path.endswith('pdf'):
 
-        f = open('csvfile.csv','w')
+        opname = file.name.split('.')[0] + ".csv"
+        f = open(opname,'w')
         f.write("Date, Inv No., Inv. Amount, P.O. No., Payments, Amt. Due, Bal. Fwd"+'\n')
 
         
@@ -24,7 +25,12 @@ for file in obj:
 
         list = df.values.tolist()
 
+        amtdue = 0;
+
         for x in range(len(list)):
+
+            amtdue = amtdue + list[x][5]
+            
             if list[x][0].startswith('Cust'):
                 #for y in range(len(list[x])):
                 list[x][0] = str(list[x][0])+str(list[x][1])+str(list[x][2])+str(list[x][3])+str(list[x][4])+str(list[x][5])+str(list[x][6])
@@ -42,28 +48,10 @@ for file in obj:
             
             f.write(opstr+'\n')
 
-                #print(list[x])
-            #if df.iloc[x][0].startswith('Cust'):
-            #    #df.iloc[x][0].replace("test")
-            #    print(df.iloc[x][0])
+        f.write("Conversion Check Sum: " + str(amtdue))
 
 
 
         f.close()
         
-        #out = csv.writer(open("myfile1.csv","w"), delimiter=',',quoting=csv.QUOTE_ALL)
-        #out.writerows(list)
-        #out.close()
-
-
-                
-
-        #df.to_csv(r'file')
-
-    #print(data)
-
-
-
-    #df.to_csv(r'C:\Satements\1.csv')
-    
-#tabula.convert_into_by_batch(path, output_format='csv', pages='all', pandas_options=None, multiple_tables=True)
+        
